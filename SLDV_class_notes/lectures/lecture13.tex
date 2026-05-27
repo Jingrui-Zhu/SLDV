@@ -1,0 +1,151 @@
+\chapter{Lecture 13 - Visualizing large graphs}
+The primary non-technical challenge in visualizing large datasets can be defined as a perceptual scalability problem. While the technical challenge is the computational memory issue. When a dataset contains too many items or too many attributes, the resulting visualization becomes an \textit{information overflow}.
+
+
+\section{Overview and Details}
+The core solution to the problem, allowing a user to analyze data that is too large for their display, is to \textit{combine representation and interaction}. This can be achieved by balancing two types of views: overview and details.
+\begin{itemize}[noitemsep]
+    \item \textbf{Overview} provides a high-level view of the entire dataset. It is valuable for representing overall patterns, assisting with navigation, and orienting the user's activities. It can be one of the two paradigms: \textit{perspective} (a panoramic big picture from which trends and categories can be inferred) or \textit{compendium} (a sketchy view where high-level categories and trends are shown directly)
+    \item \textbf{Details} allow the viewer to examine individual cases and attributes, provided on demand, meaning only a few are shown at a time to prevent clutter
+\end{itemize}
+
+To allow a user to navigate a dataset that is too large for their screen, the designer must decide how to display the overview (or context) and the detail (or focus) together. There are two primary ways to combine these views: space-based combination and time-based combination.
+
+\subsubsection{Space-based combination}
+This approach uses different portions of the screen to show the overview and details at the same time. These are often called \textit{Focus + Context techniques}, and they are classified into several categories:
+\begin{itemize}[noitemsep]
+    \item \textbf{Details-only (single window)}: this is the simplest version, where interaction happens strictly through zooming and panning. It works effectively when the zoom factor is relatively small; otherwise, the "far away" context can be easily neglected.
+    \item \textbf{Coordinated pair}: this provides a combined display of the overview and a local magnified view. It can be implemented as two separate views side-by-side or by replacing the overview as an inset within the detailed view (like mini-maps in Google Maps)
+    \item \textbf{Thumbnails}: these provide a summary overview of a document, such as the slide panel used in PowerPoint 
+    \item \textbf{Fisheye view}: inspired by physical lenses, this technique magnifies the center of the field of view while providing a continuous fall-off in magnification towards the edges. This allows the user to see local details and global context simultaneously without switching windows. This may have a single or multiple focuses. An example of this technique is the toolbar in a Mac; the icon enlarges when the mouse passes over it
+    \item \textbf{Perspective wall}: this technique uses a 3D interface to fold a large data space, allowing a much larger area to be seen within a small window
+    \item \textbf{Space folding}: this involves "folding" a visual representation (like a map) to eliminate non-relevant parts of the data, effectively bringing the focus and context closer together.
+\end{itemize}
+
+\subsubsection{Time-based combination}
+This approach involves alternating between the overview and the details sequentially in the same space. Users navigate the data using temporal interactions like zooming, panning, and scrolling rather than seeing both views at once.
+
+\section{Interactive exploration strategies}
+Users navigate and explore massive datasets through specific interactive strategies. These solutions rely on a strong interaction between the user and the drawing, where the graph is visualized incrementally or at varying levels of detail. \par
+There are two fundamental, opposing strategies for exploring large graphs: \textit{Top-down and Bottom-up}
+
+\subsection{Top-Down exploration (The Shneiderman Mantra)}
+This is the most common approach and follows the Shneiderman mantra: \textbf{overview first, zoom and filter, then details on demand}.\par
+The approach works starting at an initial "sketchy" or high-level overview of the information. The user then interactively explores the data by filtering out noise or zooming in on specific areas to get more detail. \par
+The high-level overviews are typically created using three techniques: \textbf{filtering} (deleting nodes/edges), \textbf{sampling} (keeping only a fraction), or \textbf{clustering} (merging nodes).\par
+However, this approach has a major limitation: the definition of what constitutes a "good" overview is highly dependent on the specific problem or dataset at hand
+
+\subsection{Bottom-Up Exploration}
+This strategy is used primarily when an overview is impossible to get because the graph is simply too vast or complex. Its mantra is: \textbf{search, show context, expand on demand}. \par
+This approach works by visualizing the graph one piece at a time. The users navigate through the data using a "topological window" that acts like a lens moving across a canvas, or through the incremental enhancement of a specific starting point.\par
+But, because there is no global overview, it is very difficult for users to preserve a mental map of where they are in the larger structure of the graph.
+
+\section{Overview generation}
+This section covers the techniques used to generate the upon mentioned overviews. These techniques focus on reducing the complexity of a graph while preserving its most important structural features.
+
+\subsection{Filtering and Sampling}
+Filtering involves deleting nodes and edges to simplify the drawing. There are three common criteria for deciding which nodes to keep:
+\begin{itemize}[noitemsep]
+    \item Node degree: this assumes that nodes with many connections (high degree) are more important than those with few connections
+    \item Node role: this focuses on "bottleneck" nodes that keep different parts of the graph connected; these are prioritized over redundant nodes
+    \item Random choice: every data point has the same probability of being selected, which is useful for getting a statistically representative "sample" of a massive graph
+\end{itemize}
+
+\subsection{Coreness and k-core}
+A more sophisticated form of filtering is based on coreness. Instead of simply deleting low-degree nodes once, the algorithm performs a recursive deletion. \par
+\begin{definition}[k-core]
+    The k-core of a graph is the maximal induced subgraph such that every remaining node has degree of at least k.\par
+\end{definition}
+The k-core of a graph is obtained by recursively deleting all nodes of degree less than k. Because deleting a node reduces the degree of its neighbors, the algorithm continues to recursively remove these newly degree-reduced nodes until every node left in the subgraph satisfies the degree requirement.\par
+The algorithm creates a hierarchy of k-cores: 1-core is obtained by removing all isolated nodes; 2-core is obtained by recursively removing all nodes of degree 1; 3-core is obtained by recursively removing nodes of degree 1 and 2, and so on, until the algorithm reaches a point where no nodes meet the degree requirement (an empty graph, so to speak).\par
+\textit{Note}: the subgraphs of a k-core do not have to be connected, therefore, \textit{subgraphs} :) \par
+
+\subsubsection{Properties}
+If, for some k >= 1, a graph G has k-core \(G_k\), it has following properties:
+\begin{itemize}[noitemsep]
+    \item \textbf{Uniqueness}: for any given value of k, the k-core of \(G_k\) is unique
+    \item \textbf{Existence}: if a graph has a k-core (\(G_k\)), it must also possess a (k-1)-core (\(G_{k-1}\))
+    \item \textbf{Nesting}: the k-core is always contained within the (k-1)-core (\(G_k \subseteq G_{k-1}\)), forming a clear structural hierarchy.
+\end{itemize}
+Higher k-cores represent the increasingly "dense heart" of a network.
+
+\subsubsection{Application}
+The k-core components are the individual connected pieces that make up the k-core. These components are often used in the \textit{(X, Y)-clustering model}, where the goal is to group nodes such that the "graph of cluster" (X) is sparse and readable (like a planar graph), while each "individual cluster" (Y) is a k-core component. \par
+Determining the minimum k for which a graph can be visualized as a (planar, k-core component)-graph can be solved in polynomial time, typically \(O((n+m)\log_n)\), making it a highly efficient strategy for navigating complex network data.
+
+\subsection{Betweenness centrality}
+Another metric used for filtering is betweenness, which is a measure of centrality used to identify the relative importance of nodes within a network. Betweenness focuses on a node's role as a bridge or connector along the shortest paths between other nodes. Nodes with high betweenness are critical for the flow of information, even if they don't have a high degree.
+\begin{definition}[Betweenness]
+    Let \(\delta_{st}(v)\) denote the fraction of the shortest paths between two nodes, s and t, that pass through vertex v such that,  \(\delta_{st}(v) = \sigma_{st}(v) / \sigma_{st}\)\ , where:
+    \begin{itemize}[noitemsep]
+        \item \(\sigma_{st}(v)\) is the \# of the shortest paths from s to t passing through v
+        \item \(\sigma_{st}\) is the total \# of shortest paths from s to t
+    \end{itemize}
+    The \emph{betweenness} of a vertex v is the sum of all fractions of every pair of nodes in the graph passing through vertex v.
+\end{definition}
+
+\subsubsection{Role}
+In the context of managing "information overflow" in large datasets, betweenness is a critical metric for filtering and sampling. 
+\begin{itemize}[noitemsep]
+    \item Nodes with high betweenness are often "bottlenecks" or "bridges" that keep different parts of the graph connected.
+    \item When creating a high-level overview, these "bridge" nodes are considered more important than redundant nodes, even if they have a relatively low number of direct connections (degree)
+\end{itemize}
+By retaining nodes with high betweenness while filtering out others, designers can create a high-level overview that preserves the essential topological structure of a massive graph.
+
+\section{Clustering and clustered graphs}
+Clustering is a primary method for creating high-level overviews of large graphs by merging individual nodes into groups. Each cluster acts as a single representative for all the nodes it contains, effectively reducing the visual complexity of the network.
+
+\subsection{Hierarchical and Flat clustering}
+There are two main structural organizations for clusters, hierarchical (or recursive) clustering and flat clustering:
+\begin{itemize}[noitemsep]
+    \item \textbf{Hierarchical clustering} is where clusters can be nested within one another, creating an inclusion tree. This structure allows users to explore complex information at different abstract levels by expanding or contracting specific branches of the tree
+    \item \textbf{Flat clustering} occurs when all clusters (other than the root) are direct children of the root. This is functionally equivalent to a coloring of the vertices in the underlying graph, where each color represents a distinct group
+\end{itemize}
+
+\begin{definition}[proper inclusion tree]
+    The inclusion tree (hierarchical clustering) is \emph{proper} if all leaves are at the same distance from the root
+\end{definition}
+
+\begin{definition}[view]
+    A \emph{view} of a clustered graph is the graph obtained by only considering the clusters of a specific level of a proper inclusion tree 
+\end{definition}
+
+\subsection{Visualizing clustered graphs}
+There are several conventions for rendering these structures:
+\begin{itemize}[noitemsep]
+    \item 2D node-link diagrams: these use standard representations for the network, but add regions bounded by simple curves to represent clusters. These regions must contain all and only the nodes belong to that cluster, and their inclusion within other regions represents the hierarchy
+    \item 3D multilevel drawing: these display different levels of this inclusion tree as separate layers, using "inclusion" edges to link the hierarchy between levels
+    \item clustered matrices: this approach represents the graph as a matrix where rows and columns can be recursively contracted and expanded to show different levels of detail
+    \item surface visualizations: clusters can be represented as surfaces where the exact position of nodes is known and fixed, but details only appear when the user focuses on that specific cluster.
+\end{itemize}
+
+The clusters can have different origins: \textit{manual} (explicitly defined by the users), \textit{extrinsic} (based on external meta-information on classification data), or \textit{intrinsic} (derived solely from the structure of the graph, such as through property-based or cut-based classification).
+
+\subsection{Clustered Planarity (C-planarity)}
+While standard planarity only requires that edges do not cross, a C-planar drawing must satisfy stricter geometric constraints to avoid information overflow. Specifically, you must avoid three types of intersections:
+\begin{itemize}[noitemsep]
+    \item edge-edge crossing
+    \item edge-region crossing, in which an edge cannot cross the boundary of a cluster region unless one of its endpoints is inside that cluster
+    \item region-region crossing, in which the boundaries of two different cluster regions cannot intersect.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/lecture13/13.1 c-planar.png}
+    \caption{C-planar crossings}
+    \label{fig:13.1}
+\end{figure}
+
+The difficulty of testing whether a clustered graph can be drawn without these crossing depends on its connectivity. These graphs were the subgraph induced by every single cluster that is connected. As for the complexity, the planarity problem is polynomial. But if the clusters are not connected, the complexity remains unknown.
+
+\subsection{Clustering quality}
+After establishing the planarity rules, we also need to assess the quality of the chosen clustering for the task visualization. This can be evaluated via two metrics: coverage and performance. \par
+\textit{Coverage} is the ratio of intra-cluster edges (edges within a group) to the total number of edges in the graph, while \textit{performance} is a count of "correctly interpreted pairs", which includes edges within clusters plus pairs of nodes in different clusters that are not connected.
+
+\subsubsection{K-way partitioning}
+K-way partitioning is a technique which attempt to divide a network into k clusters while minimizing inter-cluster edges (bridges between groups). This is noted as an NP-hard problem.\par
+Alternatively, recursively partitioning the graph into two cluster until some ending condition is reached.
+
+\subsection{(X, Y)-clustering model}
+(X, Y)-clustering model is a formal framework for navigating large graphs by balancing high-level readability with low-level detail. \textbf{Class X} (the "norm") represents the graph of clusters; to guarantee readability, class X should be a class of sparse graphs, such as planar graphs, trees, or cycles. \textbf{Class Y} (the "exception") represents the internal structure of each cluster; class Y should be a class of highly connected graphs, such as cliques or k-core components. \par
+While determining if a graph fits a (planar, k-clique) model is NP-hard, identifying a (planar, k-core component) graph can be solved in polynomial time \((O(n + m)\log\ n)\). This is achieved by computing the core numbers of all vertices and performing a binary search to find the minimum k that allows for a planar overview.
