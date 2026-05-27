@@ -1,4 +1,6 @@
+# Datasets files, ignored due to their large size and potential privacy concerns
 datasets/
+
 # LaTeX build files
 *.aux
 *.bbl
