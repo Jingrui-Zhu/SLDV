@@ -1,9 +1,0 @@
-~\hfill \textbf {Page}\par 
-\contentsline {chapter}{\numberline {1}Lecture 16 - Texture}{2}{chapter.1}%
-\contentsline {subsection}{\numberline {1.0.1}UV space}{2}{subsection.1.0.1}%
-\contentsline {subsection}{\numberline {1.0.2}Texture look up}{2}{subsection.1.0.2}%
-\contentsline {subsection}{\numberline {1.0.3}Advanced mapping techniques}{4}{subsection.1.0.3}%
-\contentsline {subsubsection}{Environmental mapping}{4}{subsection.1.0.3}%
-\contentsline {subsubsection}{Bump mapping}{4}{subsection.1.0.3}%
-\contentsline {subsubsection}{Displacement mapping}{5}{subsection.1.0.3}%
-\contentsline {chapter}{\numberline {2}Lecture 17 - }{6}{chapter.2}%

@@ -1,1 +1,26 @@
 datasets/
+# LaTeX build files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# Generated PDFs
+*.pdf
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
