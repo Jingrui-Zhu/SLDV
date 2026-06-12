@@ -20,7 +20,7 @@ datasets/
 *.vrb
 
 # Generated PDFs
-*.pdf
+#*.pdf
 
 # OS/editor files
 .DS_Store
