@@ -1,93 +1,147 @@
-\chapter{Lecture 12 - Graph drawing}
-
-\begin{definition}[graph drawing]
-    Graph drawing is the process of taking an abstract graph \(G = (V, E)\), consisting of a set of vertices (V) and a set of edges (E), and using an algorithm to produce a visual "drawing". 
-\end{definition}
-
-Graph drawing is essential across many scientific and technical fields where relationships between entities need to be visualized. For instance, in engineering, it is used for designing electric circuits; in computer science, it helps in website analysis and visualizing computer networks; in social and security science, the emerging applications include intelligent analysis, forensic accounting, and more.\par
-Graph drawing is closely linked to several other fields: graph theory (mathematical properties of graphs), information visualization (using visuals to explore abstract data), computational geometry (solving geometric problems using computers), and algorithm engineering (devising efficient computational processes). \par
-
-\section{Planarity}
-
-\begin{definition}[Planar embedding]
-    Planar embedding is a way to map the graph to a 2D plane such that no edges intersect
-\end{definition}
-
-The primary challenge in graph drawing is to find a planar embedding. To simplify the problem, it is suggested to break the graph down based on its connectivity:
-\begin{itemize}[noitemsep]
-    \item cut-vertex: a specific vertex whose removal produces a disconnected graph
-    \item bi-connected graph: a graph that contains no cut-vertices
-    \item blocks: you can recursively split a graph into smaller bi-connected pieces, which are called blocks
-    \item Block-Cut-vertex Tree (BC-tree): the relationships between these blocks and the cut-vertices used to split them are represented by a specialized tree structure
-\end{itemize}
-
-\begin{theorem}[Planarity]
-    A graph is planar if and only if all of its individual blocks are planar
-\end{theorem}
-Thanks to this theorem, which allows researchers to use a divide-and-conquer strategy: instead of testing a massive, complex graph all at once, you can test each block separately.
-
-\subsection{The Auslander and Parter algorithm}
-It is an established algorithm with computational cost of \(O(n^2)\), a method for planarity testing. 
-\begin{enumerate}[noitemsep]
-    \item \textbf{Bi-connectivity assumption} --> the algorithm assumes the input graph is bi-connected. If the graph is not bi-connected, the divide-and-conquer strategy can be used to test its individual blocks one by one.
-    \item \textbf{Selecting a cycle and identifying "pieces"} --> the process begins by finding a cycle C within the graph, and the algorithm identifies the "pieces" attached to C. A \textbf{piece} can be a single edge connecting two non-consecutive vertices on the cycle, or a more complex subgraph connected to the cycle at specific points. Every piece must eventually be drawn either entirely inside or entirely outside the cycle C to avoid crossing edges
-    \item \textbf{Building the incompatibility Graph} --> the algorithm builds a secondary graph, called the incompatibility graph, to determine if a piece can be placed without crossing. Each node in such a graph represents one of the pieces identified in the previous step. An edge is drawn between two nodes if their corresponding pieces conflict. A conflict occurs if the two pieces cannot be placed on the same side of the cycle without crossing each other
-    \item \textbf{Bipartite-ness} --> once the incompatibility graph is built, the algorithm checks if it is bipartite. A graph is \textbf{bipartite} if the pieces can be partitioned into two groups, those that are drawn inside the cycle and those that are drawn outside. If it is not bipartite, it means that the graph contains a cycle of conflict that makes it impossible to draw it without at least one crossing. In this case, the graph is non-planar
-    \item \textbf{Divide-and-Conquer recursion} --> passing the incompatibility test for each cycle is not enough. The algorithm must ensure that the internal structure of each piece is also planar. The algorithm repeats the entire process recursively for each piece, combined with the cycle it is attached to. The recursion stops when a piece is reduced to a simple path or a single edge, at which point it is inherently planar.
-\end{enumerate}
-
-\section{Graph drawing aesthetics}
-While an algorithm can produce many different drawings of the same graph, not all of them are equally useful. Aesthetics can be seen as mathematical properties that correlate with the readability of a drawing.
-
-\subsubsection{Minimizing crossing}
-The most fundamental aesthetic is reducing the number of edge intersections. A drawing is clearer if the number of intersections is reduced. This is why planarity testing is so critical. A planar drawing (no crossings) is generally the gold standard for readability.
-
-\subsubsection{Minimizing size (area)}
-A good drawing should be compact. Small size allows the user to see a large picture of the drawing at once. One should try to minimize the total area of the drawing, the maximum edge length, and the average edge length.
-
-\subsubsection{Minimizing bends}
-In certain drawing conventions (like "orthogonal" drawings where edges are made of horizontal and vertical segments), edges can have "bends" or angles. Edges with many bends are difficult to follow for human eye.
-
-\subsubsection{The contrast of aesthetics}
-A crucial insight is that these aesthetics often conflict with each other. You cannot always minimize everything at once. Choosing the "best" drawing often involves a trade-off between these competing goals
-
-\subsubsection{drawing conventions}
-When an algorithm is tasked with creating a drawing, it must follow a drawing convention, a set of geometric rules that define the style and constraints of the output.
-\begin{itemize}[noitemsep]
-    \item Polyline: edges are represented as a sequence of connected line segments
-    \item Straight line: edges are simple, single straight segments between vertices
-    \item Layered: vertices are arranged into horizontal layers, often used for hierarchical structures
-    \item Orthogonal: edges are made up only of horizontal and vertical segments
-\end{itemize}
-Drawing on the grid can ensure precision and help minimize the total area of the drawing. In a grid drawing, vertices are required to have integer coordinates. This approach helps satisfy the aesthetic goal of small size, which allows users to see more of the graph at once. 
-
-\section{Kuratowski's theorem}
-While many graphs can be drawn planarly, others are inherently non-planar. The Kuratowski theorem provides criteria for identifying these graphs
-
-\subsubsection{The minimal non-planar graphs}
+\chapter{Lecture 12 - Data manipulation and Visualization}
+Visualization is a tool to enable specific tasks or convey particular messages. One should choose a graphic form based on what you want to achieve: comparing values, seeing changes, revealing relationships, or envisioning patterns. \par
+To organize a display effectively, one should identify the specific tasks the graphic should enable, try different graphic forms according to tasks, arrange the graphic components to make it easy to extract meaning, and test the outcome with other people.
 
 \begin{figure}[htbp]
     \centering
-    
-    \begin{subfigure}[b]{0.45\textwidth}
+
+    \begin{subfigure}[b]{0.32\linewidth}
         \centering
-        \includegraphics[width=0.4\linewidth]{imgs/lecture12/12.1 non-planar.png}
-        \caption{}
+        \includegraphics[width=\linewidth]{imgs/lecture12/12.1 organizing display.png}
+        \caption{Grouped bar chart \textit{by age}}
         \label{fig:12.1a}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.32\linewidth}
         \centering
-        \includegraphics[width=0.4\linewidth]{imgs/lecture12/12.2 non-planar.png}
-        \caption{}
+        \includegraphics[width=\linewidth]{imgs/lecture12/12.2 organizing display.png}
+        \caption{Grouped bar chart \textit{by media}}
         \label{fig:12.1b}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/lecture12/12.3 organizing display.png}
+        \caption{Line chart}
+        \label{fig:12.1c}
+    \end{subfigure}
 
-    \caption{Non-planar drawings}
+    \caption{Advertisement market analysis example}
     \label{fig:12.1}
 \end{figure}
 
-The two minimal non-planar graphs: there are two specific structures that make a graph non-planar. Fig \ref{fig:12.1a} is a complete graph with 5 vertices where every vertex is connected to every other vertex. Fig \ref{fig:12.1b} is a complete bipartite graph where two sets of three vertices are connected to each other, also known as the "utility graph"
+In fig \ref{fig:12.1} shows an example of advertisement market analysis to show the degree of advertising media influence on each age group in buying decisions. It shows how reorganizing the same data can reveal different insights:
+\begin{itemize}[noitemsep]
+    \item Fig.\ref{fig:12.1a} groups all media types under each age category. It is excellent for comparing different methods within a single age group. 
+    \item Fig.\ref{fig:12.1b} organizes the data so that each media type is its own category, with age groups as the bars within them. This makes it easier to see a downward pattern as the population ages.
+    \item Fig.\ref{fig:12.1c} places age groups on the x-axis and media types as separate lines; this chart allows for a dual purpose. It shows trends across age groups while also allowing the comparison between each medium within each group because the data points are "stacked" visually.
+\end{itemize}
 
-\subsubsection{The subdivision rule}
-A graph does not have to be exactly one of the two drawings in fig. \ref{fig:12.1} to be non-planar; it only needs to contain a subdivision of one of them. A subdivision occurs when new vertices are inserted along the edges of the original structure.
+\section{Exploring data}
+The core objective of data exploration is to find patterns and trends in data and then observe deviations from those patterns, often referred to as identifying the \textbf{"norm (or smooth) and the exception"}.\par
+When beginning to explore a dataset, it is suggested to use a measure of central tendency, which gives an idea of the "average" size of numbers and where the center points lie.
+
+\subparagraph{Mode, Median, Mean}
+The \textbf{mode} is the simplest measure and represents the values that appear most frequently in the distribution. Unimodal distributions have one mode, multimodal distributions have two or more modes that are equally common. \par
+The \textbf{median} is the value that divides the distribution exactly in two halves; it is considered a resistant statistic because it is not distorted by extreme outliers. \par
+The \textbf{mean} or average is the result of adding up all values and dividing by the total count. This measure is very sensitive to extreme values (outliers), unlike the median.\par
+Example: The raw data of annual salary, in \$ [20k, 22k, 25k, 30k, 32k, 40k, 5M]\par
+--> the mean annual salary of this dataset is around 700k\$, which is a dozen times higher than the majority of the annual salaries in the dataset \par
+--> the median of the data is 30k\$ which is a more accurate representation of the average \par
+
+\subsubsection{Weighted means}
+It is important to be careful when calculating simple statistics and understanding the data before manipulating it.\par
+When calculating the average of several already-averaged groups, it is calculating a \textbf{grand mean} (or "mean of means"). This approach is appropriate if all the groups have a similar number of counts. If the count sizes are different, a discrepancy will emerge; the risk is that this approach gives a small group exactly the same weight as a large group.\par
+Example: School A has 5 students while School B has 500 students. If the grand mean is used here, a single high-performing student in the tiny school A will have a disproportionately massive impact on the final average, while the performance of School B is undervalued. \par
+To account for these size differences, the \textbf{weighted mean} needs to be used, which ensures that each individual data point contributes equally to the final result, regardless of which group they belong to. 
+
+\subsubsection{Range and Shape}
+While measures of central tendency tell you where the "center" of your data is, they are often insufficient on their own. They do not reveal whether the data points are clustered closely around that center or widely scattered.\par
+The simplest way to measure spread is the range, which is the difference between the maximum and the minimum values in a distribution. The range tells you the extremes, but it does not tell you how many data points are close to the average.\par
+Histograms can be used to visualize frequency and the \textbf{shape} of the dataset. Data is aggregated into "bins" (ranges of scores), and the height of each bar represents the frequency of values within that range.\par
+If a histogram is too aggregated, a strip plot can provide a higher level of detail by displaying every single data point as a dot.
+
+\subsubsection{Takeaway message}
+The histogram, the range chart(or lollipop chart), and the strip plot are three different ways to visualize the spread and the shape of the distribution at different levels of detail. Using them together allows one to see the "norm" while identifying the "exceptions". One should never rely on just a single statistic or chart for exploratory work. 
+
+\section{Numerical summaries and Standardization}
+Transforming visual representations of spreads to more precise numerical summaries and techniques for standardizing data allows for fair comparisons between different groups, providing exact measurements of how much the data deviates from the "norm".\par
+The two most common tools for measuring the "spread" of a distribution are \textit{variance} and \textit{standard deviation}, which are defined as follows:\par
+\begin{equation}
+    variance = {\sum(Each \ score - mean)^2 \over \#scores}
+\end{equation}
+
+\begin{equation}
+    standard\_deviation = \sqrt{variance}
+\end{equation}
+
+When you need to compare individual scores from two completely different distributions, you use a \textbf{z-score} (or standard score). A z-score tells you exactly how many standard deviations a raw score is away from its mean. It is defined as:
+\begin{equation}
+    z = {(raw\_score - mean)\over standard\_deviation}
+\end{equation}
+Example: IT salary comparison in the US (high mean, low relative standard deviation) Vs Nigeria (low mean, high relative standard deviation). \par
+--> Because the cost of living and economies are different, one cannot compare directly absolute values.\par
+--> By transforming salaries into a standard score, one can find the "equivalencies". For instance, if an employee in the US has a z-score of 0.3, you can calculate what a similar relative salary would be in Nigeria by applying that same 0.3 z-score to the Nigerian distribution.\par
+--> Given that in the US an employee makes 125.335, and that the US mean is 122.400, the standard deviation is 10.746. Then the z-score of this employee = (125335-122400)/10746 = 0.3 \par
+--> Find the "equivalent" salary in Nigeria by finding the raw score, given that in Nigeria, the standard deviation is 12.589 and the mean is 29170. The equivalent salary in Nigeria is (0.3 * 12589) + 29170 = 32947
+
+\subsubsection{The standard Normal distribution}
+Many natural phenomena (like height, weight, exam scores) follow a normal distribution, in which:
+\begin{itemize}[noitemsep]
+    \item the mean, median, and mode are all the same
+    \item the distribution is perfectly symmetrical
+    \item \textbf{empirical rule}: approximately 68.2\% of cases fall within 1 standard deviation of the mean, 95.4\% within 2 standard deviations, and 99.8\% within 3 standard deviations.
+\end{itemize}
+
+The empirical rule explains how "normal" or "exceptional" a specific data point is: if a value has a z-score of 1, you know it is higher than roughly 84\% of the population (the 50\% below the mean plus the 34.1\% between the mean and 1 standard deviation). If a value falls beyond 2 standard deviations, it is statistically rare. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/lecture12/12.4 normal distribution.png}
+    \caption{Standard Normal Distribution}
+    \label{fig:12.2}
+\end{figure}
+
+\subsubsection{Standard scores can be misleading}
+The population size matters!! Given the example in the reading material (page 45), the graphics show that sparse, rural counties in the US has both the highest and the lowest cancer rates. This is not necessarily due to diet or environment; it is a statistical reality that small populations show much more variation and more extreme outliers.\par
+One way to visualize this data properly is to use a funnel plot, where the variation of data points narrows significantly as the population size (on the x-axis) increases.
+
+\section{Percentiles}
+Measurements like \textit{median} and \textit{percentiles} are resistant statistics; they are not distorted by extreme outliers in a distribution.
+\begin{definition}[Percentile]
+    A percentile \textit{p} is a value that splits a distribution such that \textit{p}\% of all other values lie below it.
+\end{definition}
+For instance, the median is always the 50th percentile because it lies exactly in the middle. These act as a rank; being in the 90th percentile means your score is equal or higher than 90\% of the rest of the group. Quartiles (the 25th, 50th, and 75th percentiles) divide the distribution into quarters, and are recommended when exploring data.
+
+\subsection{Box plot}
+The box plot is a simplified visual representation of a distribution that emphasizes quartiles and outliers. Its main components are:
+\begin{itemize}[noitemsep]
+    \item the \textbf{box}: represents the inter-quartile range (IQR), which is the distance between the first and the third quartiles. The vertical line inside the box marks the median
+    \item the \textbf{whiskers}: these lines extend from the box up to 1.5 times the IQR on either side
+    \item \textbf{outliers}: any value that falls beyond the whiskers is considered an outlier and is plotted as individual dots.
+\end{itemize}
+While less detailed than a histogram or a strip plot, box plots are superior for certain tasks:
+\begin{itemize}[noitemsep]
+    \item \textbf{stressing outliers}: they make extreme values stand out much more clearly than other char types
+    \item \textbf{comparing distributions}: they are excellent for placing multiple datasets side-by-side to compare their centers and spread at a glance
+    \item \textbf{revealing exceptions}: by "setting aside the level" (subtracting the mean of a group from each individual score), a box plot can be used to visualize only the departures from the norm, helping one spot the most unusual cases in a dataset
+\end{itemize}
+
+\section{sum up}
+Exploring data consists of observing trends and patterns (the norm) and then identifying deviations and exceptions from them. \par
+The norm is made of three main features: the level (measures of central tendency), the spread, and the shape of the data.\par
+Exploring exceptions often involves transforming the data to set aside one of the elements of the norm, i.e., transforming the original datasets into standard scores, setting aside the spread, and substituting it with a standardized one, based on the number of standard deviations from the mean.
+
+\section{Time series}
+The standard tool for visualizing change over time is the line chart, where the x-axis represents equally spaced time intervals, while the y-axis corresponds to the magnitude of the variables being explored.\par
+When analyzing these charts of time series data, it is important to keep an eye out for the \textit{trend} (the overall direction over the segment being explored), the \textit{seasonality} (consistent, periodic fluctuations that can often muddle the understanding of the underlying trend), and the \textit{noise} (random variations that do not follow a specific pattern).\par
+When looking at the data, raw numbers can be misleading; to get a better understanding, one should apply several transformations:
+\begin{itemize}[noitemsep]
+    \item \textbf{contextual comparisons}: you might compare current data to a yearly average or look much further "back in time" to see if a recent change is truly unusual.
+    \item \textbf{ratios vs. raw numbers}: for example, when looking at the social security enrollment, the raw number of people might be increasing, but if the total population is growing faster, the percentage of people enrolled might actually be decreasing.
+    \item \textbf{moving average}: to create a better model for noisy data, you can use a moving average. This involves dividing the time series into chunks (e.g., 6-month periods) and calculating the average of each, which smooths out short-term fluctuations.
+    \item \textbf{plotting residuals}: once you have a moving average, you can plot the "departure" or residuals (the raw score - moving average) to see exactly how and when the data deviates from the trend.
+\end{itemize}
+
+\subsubsection{Logarithmic transformations}
+When dealing with variables that grow very quickly, such as population growth or bacterial cultures, standard linear scales often fail to show early changes clearly. The problem lies in an exponential growth pattern; the changes on a standard line chart only become noticeable very late in the process. Therefore, by applying a log10 transformation to change the scale so that each unit increase represents a tenfold increase. This results in a much easier identifiable growth rate, which usually appears as a straight line.
