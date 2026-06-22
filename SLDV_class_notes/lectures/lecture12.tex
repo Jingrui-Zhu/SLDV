@@ -67,8 +67,9 @@ The histogram, the range chart(or lollipop chart), and the strip plot are three 
 \section{Numerical summaries and Standardization}
 Transforming visual representations of spreads to more precise numerical summaries and techniques for standardizing data allows for fair comparisons between different groups, providing exact measurements of how much the data deviates from the "norm".\par
 The two most common tools for measuring the "spread" of a distribution are \textit{variance} and \textit{standard deviation}, which are defined as follows:\par
+%\(variance = \sum(Each \ score - mean)^2 \over \#scores\)
 \begin{equation}
-    variance = {\sum(Each \ score - mean)^2 \over \#scores}
+    variance = \frac{\sum(Each \ score - mean)^2}{\#scores}
 \end{equation}
 
 \begin{equation}
@@ -77,7 +78,7 @@ The two most common tools for measuring the "spread" of a distribution are \text
 
 When you need to compare individual scores from two completely different distributions, you use a \textbf{z-score} (or standard score). A z-score tells you exactly how many standard deviations a raw score is away from its mean. It is defined as:
 \begin{equation}
-    z = {(raw\_score - mean)\over standard\_deviation}
+    z = \frac{raw\_score - mean}{standard\_deviation}
 \end{equation}
 Example: IT salary comparison in the US (high mean, low relative standard deviation) Vs Nigeria (low mean, high relative standard deviation). \par
 --> Because the cost of living and economies are different, one cannot compare directly absolute values.\par

@@ -1,79 +1,22 @@
-\documentclass[12pt, oneside]{report}
-
-\usepackage[utf8]{inputenc}
-\usepackage[
-    style=authoryear,
-    defernumbers=true,
-    backend=biber,
-    dashed=false,
-    maxnames=999,
-    maxcitenames=3,
-    giveninits=true,
-    urldate=long,
-    uniquename=false,
-    uniquelist=false
-]{biblatex}
-
+\input{preamble.tex}
 %\includeonly{lectures/lecture13}
-
-\usepackage{IEEEtrantools}
-\usepackage[margin=.85in]{geometry}
-\usepackage{graphicx}
-\usepackage{mathptmx}
-\usepackage{xcolor}
-
-\usepackage[
-    colorlinks=false,
-    linkbordercolor=white,
-    citebordercolor=white,
-    filebordercolor=white,
-    urlbordercolor=white
-]{hyperref}
-
-\addbibresource{references.bib}
-
-\usepackage{subcaption}
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{enumitem}
-
-%\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{tabularx}
-\usepackage{titlesec}
-
-\linespread{1.25}
-\pagestyle{plain}
-
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{Rule}{Rule}
-
-\numberwithin{definition}{chapter}
-\numberwithin{theorem}{chapter}
-\numberwithin{lemma}{chapter}
-\numberwithin{Rule}{chapter}
-\numberwithin{equation}{chapter}
-
-\titlespacing{\chapter}{0pt}{*4}{*2.5}
-\titleformat{\chapter}{\normalfont\huge\bf}{\thechapter}{20pt}{\huge\bf}
-
-\setcounter{tocdepth}{1}
-
 
 \begin{document}
 
-\input{titlepage}
+\title{Scientific and Large Data Visualization - class notes}
+\author{Jingrui Zhu}
+\date{}
 
-\tableofcontents 
-\addtocontents{toc}{~\hfill\textbf{Page}\par} 
+\maketitle
 
 \begin{abstract}
     Disclaimer: These personal notes are intended for educational purposes only and may contain errors or inaccuracies. 
     They are not a substitute for attending lectures, or consulting with lecturers. 
     The content is based on the author's understanding of the course material and may not reflect the official curriculum or the views of the lecturers. 
 \end{abstract}
+
+\tableofcontents 
+\addtocontents{toc}{~\hfill\textbf{Page}\par} 
 
 \include{lectures/lecture1}
 \include{lectures/lecture2}
@@ -94,6 +37,7 @@
 \include{lectures/lecture17}
 \include{lectures/lecture18}
 \include{lectures/lecture19}
+
 \end{document}
 
 
