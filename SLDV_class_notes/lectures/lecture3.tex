@@ -5,13 +5,7 @@ There are two core graphical elements in a visualization: visual marks and visua
 They are the building blocks for analyzing visual encoding; even complex visual encoding can be broken down into components that can be analyzed in terms of their marks and channel structure. The effectiveness of marks and channels for encoding data depends on data types.
 
 \begin{definition}[Marks]
-    A mark is a basic graphical element, a geometric primitive. They are classified according to the number of spatial dimensions they require: 
-    \begin{itemize} [noitemsep]
-        \item 0-dim: points
-        \item 1-dim: line, segments
-        \item 2-dim: areas
-        \item 3-dim: volumes
-    \end{itemize}
+    A mark is a basic graphical element, a geometric primitive. They are classified according to the number of spatial dimensions they require: 0-dim (points), 1-dim (lines, segments), 2-dim (areas), 3-dim (volumes)
 \end{definition}
 
 \begin{definition}[Channels]
@@ -25,9 +19,7 @@ They are the building blocks for analyzing visual encoding; even complex visual 
     \end{itemize}
 \end{definition}
 
-Channels can be divided into 2 different categories, according to the two different sensor modalities on the human perceptual system: identity and magnitude channels.\par
-\textbf{Identity} channels give information about what something is or where it is, like \textit{shape, color}.\par
-\textbf{Magnitude} channels tell us how much of something there is, the \textit{length, area, saturation, size, ...}
+Channels can be divided into 2 different categories, according to the two different sensor modalities on the human perceptual system: identity and magnitude channels. \textbf{Identity} channels give information about what something is or where it is, like \textit{shape, color}. \textbf{Magnitude} channels tell us how much of something there is, the \textit{length, area, saturation, size, ...}
 
 \begin{definition}[Context]
     A contextual component can make a visualization much easier to interpret, such as legends, labels, annotations, and also grids, axes, reference lines, etc.
@@ -47,16 +39,16 @@ Visual decoding means deconstructing a visual representation into its major unit
 Channels are not equal: the same data attribute encoded with two different visual channels will result in different information content on the users' side, after it has passed through the perceptual and cognitive pathways of the human visual system. \par
 The use of marks and channels in visual design should be guided by the principles of \textbf{expressiveness and effectiveness}. There is a ranking of channels according to the type of data that is being visually encoded. Once you have identified the most important pieces of information in your data, you have to ensure they are encoded with the highest-ranked channels.
 
-\begin{definition}[The Expressiveness Principle]
+\begin{theorem}[The Expressiveness Principle]
     The visual encoding should express all of, and only, the information that is present in the dataset attributes. Do not represent information and relationships that are not in the data, especially, do not use any color or position when the data does not encode any information.
-\end{definition}
+\end{theorem}
 
 \textit{Ordered data} should be shown so that our visual system perceives them as ordered, by using \textit{magnitude channels.}\par
 \textit{Unordered data} shouldn't be shown in a way that perceptually implies an ordering that does not exist, use \textit{identity channels}.
 
-\begin{definition}[The Effectiveness Principle]
+\begin{theorem}[The Effectiveness Principle]
     The importance of the attribute should match the salience of the channel, i.e., its noticeability. Relevant information should be prioritized, then encoded with the most effective/accurate channels to be most noticeable. Decreasingly important attributes can be matched with less effective channels.
-\end{definition}
+\end{theorem}
 
 \section{Channel rankings}
 The ranking shows how effective the channels are at conveying different types of attributes.
@@ -64,19 +56,19 @@ The ranking shows how effective the channels are at conveying different types of
     \centering
     \includegraphics[width=\linewidth]{imgs/lecture3/3.4 channel rankings.png}
     \caption{A channel ranking}
-    \label{fig:3.2}
+    \label{fig:3.1}
 \end{figure}
 
-The fig~\ref{fig:3.4} shows one proposed channel ranking. As the figure shows, in both classifications, spatial channels appear at the top of the lists. The choice of which attributes to encode with position is the most central choice in visual encoding, as they will dominate a user's mental model.
+The fig~\ref{fig:3.1} shows one proposed channel ranking. As the figure shows, in both classifications, spatial channels appear at the top of the lists. The choice of which attributes to encode with position is the most central choice in visual encoding, as they will dominate a user's mental model.
 \section{Visual representation, a counterexample}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{imgs/lecture3/3.5 visual counterexample.png}
     \caption{A visual counterexample}
-    \label{fig:3.5}
+    \label{fig:3.2}
 \end{figure}
 
-The fig~\ref{fig:3.5} shows a visual representation of causes of death used in a debate. Where, each rectangle represents a death cause, the size of the rectangle represent years of life lost, the color represents the group of death, and the color intensity represents the change from one year to another.\par
+The fig~\ref{fig:3.2} shows a visual representation of causes of death used in a debate. Where, each rectangle represents a death cause, the size of the rectangle represent years of life lost, the color represents the group of death, and the color intensity represents the change from one year to another.\par
 It is a very complicated graph on a very complicated topic; some bad design choices made it less effective than it should be:
 \begin{itemize}[noitemsep]
     \item the use of 3D projection is unnecessary, makes the perception of each rectangle much more difficult to comprehend.
@@ -99,7 +91,7 @@ Humans can only perceive length as a very close match to the true value; all oth
     \centering
     \includegraphics[width=0.3\linewidth]{imgs/lecture3/3.6 law of power.png}
     \caption{The power law of Stevens}
-    \label{fig:3.4}
+    \label{fig:3.3}
 \end{figure}
 
 \subsection{Discriminability}
@@ -118,7 +110,7 @@ Many visual channels provide visual pop-outs, where a distinct item stands out f
     \centering
     \includegraphics[width=0.5\linewidth]{imgs/lecture3/3.7 pop out.png}
     \caption{Visual pop-out}
-    \label{fig:3.7}
+    \label{fig:3.4}
 \end{figure}
 As a general rule, \textit{use pop-out for a single channel at a time}. Most pairs of channels do not support pop-out (except for the shape and color pair). Pop-out is not possible with 2 or more channels
 \section{Relative Vs Absolute Judgments}
@@ -133,17 +125,17 @@ Our perception of color and luminance is completely contextual.
         \centering
         \includegraphics[width=\linewidth]{imgs/lecture3/3.8 relative judgement example 1.png}
         \caption{Are the 2 objects the same height?}
-        \label{fig:3.8a}
+        \label{fig:3.5a}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.35\linewidth}
         \centering
         \includegraphics[width=\linewidth]{imgs/lecture3/3.8 relative judgement example 2.png}
         \caption{Are there different shades of gray?}
-        \label{fig:3.8b}
+        \label{fig:3.5b}
     \end{subfigure}
     \hfill
 
     \caption{Relative judgment examples}
-    \label{fig:3.8}
+    \label{fig:3.5}
 \end{figure}
